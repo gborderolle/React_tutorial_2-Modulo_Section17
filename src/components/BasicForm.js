@@ -14,18 +14,15 @@ const BasicForm = (props) => {
 
   const {
     value: enteredFirstName, isValid: enteredFirstNameIsValid, hasError: firstNameInputHasError, valueChangeHandler: firstNameInputChangeHandler, inputBlurHandler: firstNameInputBlurHandler, reset: resetFirstNameInput
-  }
-    = useInput(value => value.trim() !== '');
+  } = useInput(value => value.trim() !== '');
 
   const {
     value: enteredLastName, isValid: enteredLastNameIsValid, hasError: lastNameInputHasError, valueChangeHandler: lastNameInputChangeHandler, inputBlurHandler: lastNameInputBlurHandler, reset: resetLastNameInput
-  }
-    = useInput(value => value.trim() !== '');
+  } = useInput(value => value.trim() !== '');
 
   const {
     value: enteredEmail, isValid: enteredEmailIsValid, hasError: emailInputHasError, valueChangeHandler: emailInputChangeHandler, inputBlurHandler: emailInputBlurHandler, reset: resetEmailInput
-  }
-    = useInput(value => validateEmail(value));
+  } = useInput(value => validateEmail(value));
 
   let formIsValid = false;
   if (enteredFirstNameIsValid && enteredLastNameIsValid && enteredEmailIsValid) {
