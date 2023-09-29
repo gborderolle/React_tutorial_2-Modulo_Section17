@@ -1,32 +1,61 @@
-import { useRef, useState } from 'react'
+import { useState, useEffect } from 'react';
 
 // Clase 233: https://www.udemy.com/course/react-the-complete-guide-incl-redux/learn/lecture/25599950#search
 // Tomar valores del input: onChange y Submit con Ref
 const SimpleInput = (props) => {
-  const nameInputRef = useRef()
   const [enteredName, setEnteredName] = useState('');
+  const [enteredNameTouched, setEnteredNameTouched] = useState(false);
+  const [formIsValid, setFormIsValid] = useState(false);
 
-  const nameInputChangeHandler = event => {
-    setEnteredName(event.target.value)
-  }
+  const enteredNameIsValid = enteredName.trim() !== '';
+  const nameInputIsInvalid = !enteredNameIsValid && enteredNameTouched;
 
-  const formSubmitHandler = event => {
+  const a= useEffect(()=>{
+    if(enteredNameIsValid){
+      setEnteredName(true)
+    }
+
+  }, [enteredNameIsValid])
+
+  const nameInputChangeHandler = (event) => {
+    setEnteredName(event.target.value);
+  };
+
+  const nameInputBlurHandler = (event) => {
+    setEnteredNameTouched(true);
+  };
+
+  const formSubmitHandler = (event) => {
     event.preventDefault();
-    const enteredValue = nameInputRef.current.value;
-    console.log(enteredValue);
-    console.log(enteredName);
+
+    if (!enteredNameIsValid) {
+      return;
+    }
 
     setEnteredName('');
-    nameInputRef.current.value = '  '
-  }
+    setEnteredNameTouched(false);
+  };
+
+  const nameInputClasses = nameInputIsInvalid
+    ? 'form-control invalid'
+    : 'form-control';
 
   return (
     <form onSubmit={formSubmitHandler}>
-      <div className='form-control'>
+      <div className={nameInputClasses}>
         <label htmlFor='name'>Your Name</label>
-        <input ref={nameInputRef} type='text' id='name' onChange={nameInputChangeHandler} value={enteredName} />
+        <input
+          type='text'
+          id='name'
+          onChange={nameInputChangeHandler}
+          onBlur={nameInputBlurHandler}
+          value={enteredName}
+        />
+        {nameInputIsInvalid && (
+          <p className='error-text'>Nombre no puede ser vacío.</p>
+        )}
       </div>
-      <div className="form-actions">
+      <div className='form-actions'>
         <button>Submit</button>
       </div>
     </form>
